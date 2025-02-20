@@ -1,7 +1,7 @@
 'use client';
 
 import 'chart.js/auto';
-import { Chart as ChartJS, ChartOptions, ScaleOptionsByType } from 'chart.js';
+import { Chart as ChartJS, ChartOptions, ScaleOptionsByType as _ScaleOptionsByType } from 'chart.js';
 
 import {
   CategoryScale,
