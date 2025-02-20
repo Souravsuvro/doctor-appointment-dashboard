@@ -97,7 +97,7 @@ export default function TransactionList({ period, status, searchQuery }: Transac
   };
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto bg-white dark:bg-[#1a1f37]">
       <table className="w-full">
         <thead>
           <tr className="border-b border-gray-200 dark:border-gray-700">

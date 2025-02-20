@@ -73,17 +73,18 @@ export default function LatestNews() {
         </button>
       </div>
 
-      <div className="grid grid-cols-3 gap-6 p-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 p-4 sm:p-6">
         {news.map((item, index) => (
           <div 
             key={index}
             className="group relative bg-white dark:bg-gray-800/40 rounded-xl overflow-hidden border border-gray-100 dark:border-gray-700/30 shadow-sm hover:shadow-md transition-all duration-300"
           >
-            <div className="relative h-32 w-full overflow-hidden">
+            <div className="relative aspect-video w-full overflow-hidden">
               <Image
                 src={item.image}
                 alt={item.title}
                 fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-cover transform group-hover:scale-110 transition-transform duration-300"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
@@ -100,15 +101,15 @@ export default function LatestNews() {
               </div>
             </div>
             <div className="p-4 space-y-2">
-              <h3 className="font-semibold text-gray-900 dark:text-white line-clamp-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+              <h3 className="font-semibold text-base sm:text-lg text-gray-900 dark:text-white line-clamp-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                 {item.title}
               </h3>
               
-              <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
+              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 line-clamp-3">
                 {item.description}
               </p>
               
-              <div className="flex items-center justify-between text-sm">
+              <div className="flex items-center justify-between text-xs sm:text-sm">
                 <span className="font-medium text-gray-900 dark:text-white">
                   {item.source}
                 </span>
@@ -121,17 +122,18 @@ export default function LatestNews() {
         ))}
       </div>
 
-      <div className="flex items-center justify-center gap-1.5 pb-6">
+      <div className="flex items-center justify-center gap-2 sm:gap-1.5 pb-4 sm:pb-6">
         <button 
           onClick={handlePrevPage}
           disabled={currentPage === 1}
-          className={`p-2 rounded-lg transition-all ${
+          aria-label="Previous Page"
+          className={`p-2.5 sm:p-2 rounded-lg transition-all ${
             currentPage === 1 
               ? 'text-gray-300 dark:text-gray-600 cursor-not-allowed' 
               : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800/40'
           }`}
         >
-          <FontAwesomeIcon icon={faChevronLeft} className="w-4 h-4" />
+          <FontAwesomeIcon icon={faChevronLeft} className="w-5 h-5 sm:w-4 sm:h-4" />
         </button>
         
         <div className="flex items-center gap-1">
@@ -139,8 +141,9 @@ export default function LatestNews() {
             <button
               key={i}
               onClick={() => setCurrentPage(i + 1)}
+              aria-label={`Go to page ${i + 1}`}
               className={`
-                w-8 h-8 rounded-lg text-sm font-medium transition-all
+                w-10 h-10 sm:w-8 sm:h-8 rounded-lg text-sm font-medium transition-all
                 ${currentPage === i + 1
                   ? 'bg-blue-600 dark:bg-blue-500 text-white'
                   : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800/40'
@@ -155,13 +158,14 @@ export default function LatestNews() {
         <button 
           onClick={handleNextPage}
           disabled={currentPage === totalPages}
-          className={`p-2 rounded-lg transition-all ${
+          aria-label="Next Page"
+          className={`p-2.5 sm:p-2 rounded-lg transition-all ${
             currentPage === totalPages
-              ? 'text-gray-300 dark:text-gray-600 cursor-not-allowed'
+              ? 'text-gray-300 dark:text-gray-600 cursor-not-allowed' 
               : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800/40'
           }`}
         >
-          <FontAwesomeIcon icon={faChevronRight} className="w-4 h-4" />
+          <FontAwesomeIcon icon={faChevronRight} className="w-5 h-5 sm:w-4 sm:h-4" />
         </button>
       </div>
     </div>

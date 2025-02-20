@@ -1,6 +1,4 @@
-'use client';
-
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faVideo,
@@ -17,24 +15,9 @@ import {
   faCalendarPlus,
   faChevronDown
 } from '@fortawesome/free-solid-svg-icons';
+import { Appointment, VideoCallProps } from '@/types/dashboard';
 import VideoCall from './VideoCall';
 import Calendar from '../Calendar';
-
-interface Appointment {
-  id: number;
-  patientName: string;
-  time: string;
-  type: 'consultation' | 'procedure';
-  mode: 'in-person' | 'video';
-  status: 'scheduled' | 'in-progress' | 'completed' | 'cancelled';
-  duration: number;
-  notes?: string;
-  age?: number;
-  gender?: string;
-  contactNumber?: string;
-  email?: string;
-  medicalHistory?: string;
-}
 
 interface Notification {
   id: number;
@@ -43,73 +26,71 @@ interface Notification {
   timestamp: string;
 }
 
-// Mock data for today's appointments
-const todayAppointments: Appointment[] = [
-  {
-    id: 1,
-    patientName: 'John Smith',
-    time: '09:00',
-    type: 'consultation',
-    mode: 'video',
-    status: 'scheduled',
-    duration: 30,
-    notes: 'Follow-up checkup',
-    age: 45,
-    gender: 'Male',
-    contactNumber: '+1 (555) 123-4567',
-    email: 'john.smith@email.com',
-    medicalHistory: 'Hypertension, Regular checkups'
-  },
-  {
-    id: 2,
-    patientName: 'Emma Johnson',
-    time: '10:30',
-    type: 'procedure',
-    mode: 'in-person',
-    status: 'scheduled',
-    duration: 45,
-    notes: 'Annual physical',
-    age: 32,
-    gender: 'Female',
-    contactNumber: '+1 (555) 987-6543',
-    email: 'emma.j@email.com',
-    medicalHistory: 'Asthma, Regular medication'
-  },
-  {
-    id: 3,
-    patientName: 'Michael Brown',
-    time: '14:00',
-    type: 'consultation',
-    mode: 'video',
-    status: 'scheduled',
-    duration: 30,
-    notes: 'Prescription renewal',
-    age: 28,
-    gender: 'Male',
-    contactNumber: '+1 (555) 456-7890',
-    email: 'michael.b@email.com',
-    medicalHistory: 'No significant conditions'
-  },
-  {
-    id: 4,
-    patientName: 'Michael Adam',
-    time: '16:00',
-    type: 'consultation',
-    mode: 'video',
-    status: 'scheduled',
-    duration: 30,
-    notes: 'Prescription renewal',
-    age: 69,
-    gender: 'Male',
-    contactNumber: '+1 (555) 456-7898',
-    email: 'adam.b@email.com',
-    medicalHistory: 'No significant conditions'
-  }
-];
+const TodayAppointments: React.FC = () => {
+  const [appointments, setAppointments] = useState<Appointment[]>([
+    {
+      id: 1,
+      patientName: 'John Smith',
+      time: '09:00',
+      type: 'consultation',
+      mode: 'video',
+      status: 'scheduled' as const,
+      duration: 30,
+      notes: 'Follow-up checkup',
+      age: 45,
+      gender: 'Male',
+      contactNumber: '+1 (555) 123-4567',
+      email: 'john.smith@email.com',
+      medicalHistory: 'Hypertension, Regular checkups'
+    },
+    {
+      id: 2,
+      patientName: 'Emma Johnson',
+      time: '10:30',
+      type: 'procedure',
+      mode: 'in-person',
+      status: 'scheduled' as const,
+      duration: 45,
+      notes: 'Annual physical',
+      age: 32,
+      gender: 'Female',
+      contactNumber: '+1 (555) 987-6543',
+      email: 'emma.j@email.com',
+      medicalHistory: 'Asthma, Regular medication'
+    },
+    {
+      id: 3,
+      patientName: 'Michael Brown',
+      time: '14:00',
+      type: 'consultation',
+      mode: 'video',
+      status: 'scheduled' as const,
+      duration: 30,
+      notes: 'Prescription renewal',
+      age: 28,
+      gender: 'Male',
+      contactNumber: '+1 (555) 456-7890',
+      email: 'michael.b@email.com',
+      medicalHistory: 'No significant conditions'
+    },
+    {
+      id: 4,
+      patientName: 'Michael Adam',
+      time: '16:00',
+      type: 'consultation',
+      mode: 'video',
+      status: 'scheduled' as const,
+      duration: 30,
+      notes: 'Prescription renewal',
+      age: 69,
+      gender: 'Male',
+      contactNumber: '+1 (555) 456-7898',
+      email: 'adam.b@email.com',
+      medicalHistory: 'No significant conditions'
+    }
+  ]);
 
-export default function TodayAppointments() {
-  const [appointments, setAppointments] = useState<Appointment[]>(todayAppointments);
-  const [filteredAppointments, setFilteredAppointments] = useState<Appointment[]>(todayAppointments);
+  const [filteredAppointments, setFilteredAppointments] = useState<Appointment[]>(appointments);
   const [activeCall, setActiveCall] = useState<Appointment | null>(null);
   const [showCalendar, setShowCalendar] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
@@ -224,7 +205,7 @@ export default function TodayAppointments() {
           return {
             ...apt,
             time: newAppointmentTime,
-            status: 'scheduled'
+            status: 'scheduled' as const
           };
         }
         return apt;
@@ -247,13 +228,13 @@ export default function TodayAppointments() {
 
   return (
     <>
-      <div className="bg-white dark:bg-[#1a1f37] rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 h-full">
+      <div className="bg-white dark:bg-[#1a1f37] rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 h-auto">
         <div className="p-6 flex flex-col h-full">
           {/* Header with Filters and Notifications */}
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
               <FontAwesomeIcon icon={faUserDoctor} className="text-blue-500" />
-              Today's Appointments
+              Today&apos;s Appointments
             </h2>
             <div className="flex items-center gap-4">
               <button
@@ -311,10 +292,14 @@ export default function TodayAppointments() {
             <div className="bg-gray-50 dark:bg-gray-700/30 p-4 rounded-lg space-y-4 mb-6">
               <div className="grid grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label 
+                    htmlFor="appointment-type-filter" 
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
                     Type
                   </label>
                   <select
+                    id="appointment-type-filter"
                     value={filters.type}
                     onChange={(e) => setFilters(prev => ({ ...prev, type: e.target.value }))}
                     className="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm"
@@ -325,29 +310,38 @@ export default function TodayAppointments() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label 
+                    htmlFor="appointment-mode-filter"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
                     Mode
                   </label>
                   <select
+                    id="appointment-mode-filter"
                     value={filters.mode}
                     onChange={(e) => setFilters(prev => ({ ...prev, mode: e.target.value }))}
                     className="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm"
                   >
                     <option value="all">All Modes</option>
-                    <option value="video">Video Call</option>
-                    <option value="in-person">In-person</option>
+                    <option value="in-person">In-Person</option>
+                    <option value="video">Video</option>
+                    <option value="phone">Phone</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label 
+                    htmlFor="appointment-status-filter"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
                     Status
                   </label>
                   <select
+                    id="appointment-status-filter"
                     value={filters.status}
                     onChange={(e) => setFilters(prev => ({ ...prev, status: e.target.value }))}
                     className="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm"
                   >
-                    <option value="all">All Status</option>
+                    <option value="all">All Statuses</option>
                     <option value="scheduled">Scheduled</option>
                     <option value="in-progress">In Progress</option>
                     <option value="completed">Completed</option>
@@ -393,15 +387,16 @@ export default function TodayAppointments() {
                   />
                   
                   <div>
-                    <h3 
-                      className="text-base font-medium text-gray-900 dark:text-white cursor-pointer hover:text-blue-500 dark:hover:text-blue-400"
+                    <button
+                      type="button"
+                      className="text-base font-medium text-gray-900 dark:text-white cursor-pointer hover:text-blue-500 dark:hover:text-blue-400 bg-transparent border-none p-0 text-left"
                       onClick={() => {
                         setSelectedAppointment(appointment);
                         setShowPatientDetails(true);
                       }}
                     >
                       {appointment.patientName}
-                    </h3>
+                    </button>
                     <div className="flex items-center gap-3 mt-1">
                       <div className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400">
                         <FontAwesomeIcon icon={faClock} className="w-3.5 h-3.5" />
@@ -484,55 +479,119 @@ export default function TodayAppointments() {
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label 
+                      htmlFor="patient-name" 
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                    >
                       Name
                     </label>
-                    <p className="mt-1 text-gray-900 dark:text-white">{selectedAppointment.patientName}</p>
+                    <p 
+                      id="patient-name" 
+                      className="mt-1 text-gray-900 dark:text-white"
+                    >
+                      {selectedAppointment.patientName}
+                    </p>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label 
+                      htmlFor="patient-age"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                    >
                       Age
                     </label>
-                    <p className="mt-1 text-gray-900 dark:text-white">{selectedAppointment.age}</p>
+                    <p 
+                      id="patient-age"
+                      className="mt-1 text-gray-900 dark:text-white"
+                    >
+                      {selectedAppointment.age}
+                    </p>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label 
+                      htmlFor="patient-gender"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                    >
                       Gender
                     </label>
-                    <p className="mt-1 text-gray-900 dark:text-white">{selectedAppointment.gender}</p>
+                    <p 
+                      id="patient-gender"
+                      className="mt-1 text-gray-900 dark:text-white"
+                    >
+                      {selectedAppointment.gender}
+                    </p>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label 
+                      htmlFor="patient-contact"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                    >
                       Contact Number
                     </label>
-                    <p className="mt-1 text-gray-900 dark:text-white">{selectedAppointment.contactNumber}</p>
+                    <p 
+                      id="patient-contact"
+                      className="mt-1 text-gray-900 dark:text-white"
+                    >
+                      {selectedAppointment.contactNumber}
+                    </p>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label 
+                      htmlFor="patient-email"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                    >
                       Email
                     </label>
-                    <p className="mt-1 text-gray-900 dark:text-white">{selectedAppointment.email}</p>
+                    <p 
+                      id="patient-email"
+                      className="mt-1 text-gray-900 dark:text-white"
+                    >
+                      {selectedAppointment.email}
+                    </p>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    <label 
+                      htmlFor="patient-appointment-type"
+                      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                    >
                       Appointment Type
                     </label>
-                    <p className="mt-1 text-gray-900 dark:text-white capitalize">{selectedAppointment.type}</p>
+                    <p 
+                      id="patient-appointment-type"
+                      className="mt-1 text-gray-900 dark:text-white capitalize"
+                    >
+                      {selectedAppointment.type}
+                    </p>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label 
+                    htmlFor="patient-medical-history"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
                     Medical History
                   </label>
-                  <p className="mt-1 text-gray-900 dark:text-white">{selectedAppointment.medicalHistory}</p>
+                  <p 
+                    id="patient-medical-history"
+                    className="mt-1 text-gray-900 dark:text-white"
+                  >
+                    {selectedAppointment.medicalHistory}
+                  </p>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label 
+                    htmlFor="patient-notes"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
                     Notes
                   </label>
-                  <p className="mt-1 text-gray-900 dark:text-white">{selectedAppointment.notes}</p>
+                  <p 
+                    id="patient-notes"
+                    className="mt-1 text-gray-900 dark:text-white"
+                  >
+                    {selectedAppointment.notes}
+                  </p>
                 </div>
               </div>
 
@@ -551,9 +610,8 @@ export default function TodayAppointments() {
 
       {/* Video Call Modal */}
       {activeCall && (
-        <VideoCall
-          patientName={activeCall.patientName}
-          appointmentType={activeCall.type}
+        <VideoCall 
+          appointment={activeCall}
           onClose={handleEndCall}
         />
       )}
@@ -582,17 +640,29 @@ export default function TodayAppointments() {
 
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label 
+                    htmlFor="new-appointment-date"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
                     Select Date
                   </label>
-                  <Calendar onDateSelect={handleDateSelection} selectedDate={newAppointmentDate} />
+                  <div id="new-appointment-date">
+                    <Calendar 
+                      onDateSelect={handleDateSelection} 
+                      selectedDate={newAppointmentDate} 
+                    />
+                  </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label 
+                    htmlFor="new-appointment-time"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
                     Select Time
                   </label>
                   <select
+                    id="new-appointment-time"
                     value={newAppointmentTime}
                     onChange={(e) => handleTimeSelection(e.target.value)}
                     className="w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800"
@@ -609,7 +679,6 @@ export default function TodayAppointments() {
                     <option value="15:00">03:00 PM</option>
                     <option value="15:30">03:30 PM</option>
                     <option value="16:00">04:00 PM</option>
-                    <option value="16:30">04:30 PM</option>
                   </select>
                 </div>
               </div>
@@ -640,4 +709,6 @@ export default function TodayAppointments() {
       )}
     </>
   );
-}
+};
+
+export default TodayAppointments;

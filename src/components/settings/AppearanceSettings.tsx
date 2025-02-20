@@ -26,7 +26,7 @@ export default function AppearanceSettings() {
   };
 
   return (
-    <div className="p-6">
+    <div className="bg-white dark:bg-[#1a1f37] rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
       <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
         Appearance Settings
       </h2>

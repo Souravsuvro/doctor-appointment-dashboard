@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faChevronLeft, 
@@ -16,14 +16,33 @@ import {
   faHospital
 } from '@fortawesome/free-solid-svg-icons';
 
+interface Appointment {
+  id: number;
+  time: string;
+  patientName: string;
+  type: 'consultation' | 'procedure';
+  mode: 'in-person' | 'video' | 'phone';
+  status: 'confirmed' | 'cancelled' | 'completed';
+  duration: number;
+  notes: string;
+}
+
+interface AppointmentsByDate {
+  [date: string]: Appointment[];
+}
+
+interface CalendarProps {
+  onDateSelect: (date: Date) => void;
+  selectedDate: Date | null;
+}
+
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const months = [
   'January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December'
 ];
 
-// Mock appointments data with more details
-const appointments = {
+const appointments: AppointmentsByDate = {
   '2025-02-15': [
     { 
       id: 1, 
@@ -92,20 +111,9 @@ const appointments = {
   ]
 };
 
-interface Appointment {
-  id: number;
-  time: string;
-  patientName: string;
-  type: 'consultation' | 'procedure';
-  mode: 'in-person' | 'video' | 'phone';
-  status: 'confirmed' | 'cancelled' | 'completed';
-  duration: number;
-  notes: string;
-}
-
-export default function Calendar() {
+const Calendar: React.FC<CalendarProps> = ({ onDateSelect, selectedDate }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [selectedDateState, setSelectedDateState] = useState<string | null>(null);
   const [showAppointmentMenu, setShowAppointmentMenu] = useState<number | null>(null);
 
   const getDaysInMonth = (date: Date) => {
@@ -118,12 +126,12 @@ export default function Calendar() {
 
   const handlePrevMonth = () => {
     setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1));
-    setSelectedDate(null);
+    setSelectedDateState(null);
   };
 
   const handleNextMonth = () => {
     setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1));
-    setSelectedDate(null);
+    setSelectedDateState(null);
   };
 
   const getModeIcon = (mode: Appointment['mode']) => {
@@ -152,13 +160,22 @@ export default function Calendar() {
       const date = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
       const dateString = date.toISOString().split('T')[0];
       const isToday = new Date().toDateString() === date.toDateString();
-      const isSelected = dateString === selectedDate;
+      const isSelected = dateString === selectedDateState;
       const dayAppointments = appointments[dateString] || [];
 
       days.push(
         <div 
           key={day}
-          onClick={() => setSelectedDate(dateString)}
+          onClick={() => setSelectedDateState(dateString)}
+          onKeyDown={(e) => {
+            // Trigger the same action on Enter or Space key
+            if (e.key === 'Enter' || e.key === ' ') {
+              setSelectedDateState(dateString);
+            }
+          }}
+          role="button"
+          tabIndex={0}
+          aria-label={`Select date ${date.toLocaleDateString()}`}
           className={`
             relative h-14 p-1 rounded-lg cursor-pointer
             transition-all duration-200 group
@@ -207,7 +224,7 @@ export default function Calendar() {
     return days;
   };
 
-  const selectedAppointments = selectedDate ? appointments[selectedDate] || [] : [];
+  const selectedAppointments = selectedDateState ? appointments[selectedDateState] || [] : [];
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
@@ -258,10 +275,10 @@ export default function Calendar() {
         </div>
 
         {/* Selected Day Appointments */}
-        {selectedDate && selectedAppointments.length > 0 && (
+        {selectedDateState && selectedAppointments.length > 0 && (
           <div className="space-y-3">
             <h3 className="text-sm font-medium text-gray-900 dark:text-white">
-              Appointments for {new Date(selectedDate).toLocaleDateString()}
+              Appointments for {new Date(selectedDateState).toLocaleDateString()}
             </h3>
             <div className="space-y-2">
               {selectedAppointments.map((apt) => (
@@ -336,4 +353,6 @@ export default function Calendar() {
       </div>
     </div>
   );
-}
+};
+
+export default Calendar;

@@ -71,7 +71,7 @@ export default function AnalyticsPage() {
         {/* Analytics Grid */}
         <div className="space-y-6">
           {/* Performance Overview Section */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+          <div className="bg-white dark:bg-[#1a1f37] rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
             <PerformanceOverview />
           </div>
 

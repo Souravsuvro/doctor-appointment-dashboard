@@ -50,7 +50,7 @@ export default function TreatmentInsights({ dateRange }: TreatmentInsightsProps)
   const totalRevenue = treatments.reduce((sum, treatment) => sum + treatment.revenue, 0);
   
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700/30 p-6">
+    <div className="bg-white dark:bg-[#1a1f37] rounded-lg shadow-sm rounded-xl shadow-sm border border-gray-200 dark:border-gray-700/30 p-6">
       <div className="flex flex-col space-y-6">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">

@@ -59,7 +59,7 @@ const conversations: Conversation[] = [
 
 export default function RecentConversations() {
   return (
-    <div className="bg-white/60 dark:bg-[#1a1f37] rounded-xl shadow-sm border border-gray-200/60 dark:border-gray-700/30 h-[calc(100vh-25rem)] flex flex-col">
+    <div className="bg-white/60 dark:bg-[#1a1f37] rounded-xl shadow-sm border border-gray-200/60 dark:border-gray-700/30 h-auto flex flex-col">
       {/* Header */}
       <div className="p-4 border-b border-gray-200/60 dark:border-gray-700/30">
         <div className="flex items-center justify-between">
@@ -74,7 +74,7 @@ export default function RecentConversations() {
       </div>
 
       {/* Conversations List */}
-      <div className="flex-1 overflow-y-auto dark:bg-purple-500/10 scrollbar-thin scrollbar-thumb-blue-400/60 dark:scrollbar-thumb-blue-500/50 scrollbar-track-transparent hover:scrollbar-thumb-blue-500/80 dark:hover:scrollbar-thumb-blue-400/70">
+      <div className="max-h-[300px] overflow-y-auto scrollbar-thin scrollbar-thumb-blue-400/60 dark:scrollbar-thumb-blue-500/50 scrollbar-track-transparent hover:scrollbar-thumb-blue-500/80 dark:hover:scrollbar-thumb-blue-400/70">
         <div className="divide-y divide-gray-200/60 dark:divide-gray-700/30">
           {conversations.map((conversation) => (
             <div key={conversation.id} className="p-2 hover:bg-gray-50/60 dark:hover:bg-blue-500/10 transition-colors">

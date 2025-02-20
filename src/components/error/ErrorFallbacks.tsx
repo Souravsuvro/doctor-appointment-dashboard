@@ -61,7 +61,7 @@ export const CalendarErrorFallback = ({ onRetry }: ErrorFallbackProps) => (
       Calendar unavailable
     </h3>
     <p className="text-gray-600 dark:text-gray-400 mb-4">
-      We're having trouble loading the calendar. Please try again.
+      We&apos;re having trouble loading the calendar. Please try again.
     </p>
     {onRetry && (
       <button

@@ -10,38 +10,45 @@ import {
   faCalendarPlus
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Appointment, VideoCallProps } from '@/types/dashboard';
 import VideoCall from './VideoCall';
 
 // Mock upcoming appointments data
-const upcomingAppointments = [
+const upcomingAppointments: Appointment[] = [
   {
     id: 1,
     patientName: 'Sarah Johnson',
     time: '09:00 AM',
-    type: 'video',
-    status: 'confirmed',
-    avatar: '🧑'
+    type: 'consultation',
+    mode: 'video',
+    status: 'scheduled',
+    duration: 30,
+    notes: 'Routine check-up'
   },
   {
     id: 2,
     patientName: 'Michael Brown',
     time: '10:30 AM',
-    type: 'call',
-    status: 'pending',
-    avatar: '👨'
+    type: 'consultation',
+    mode: 'phone',
+    status: 'scheduled',
+    duration: 20,
+    notes: 'Follow-up consultation'
   },
   {
     id: 3,
     patientName: 'Emma Wilson',
     time: '02:00 PM',
-    type: 'video',
-    status: 'confirmed',
-    avatar: '👩'
+    type: 'consultation',
+    mode: 'video',
+    status: 'scheduled',
+    duration: 45,
+    notes: 'Initial consultation'
   }
 ];
 
 export default function UpcomingAppointments() {
-  const [selectedAppointment, setSelectedAppointment] = useState<typeof upcomingAppointments[0] | null>(null);
+  const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
 
   return (
     <>
@@ -71,7 +78,7 @@ export default function UpcomingAppointments() {
                   <div className="flex items-center gap-3">
                     <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-900/20">
                       <FontAwesomeIcon 
-                        icon={appointment.type === 'video' ? faVideo : faPhoneVolume}
+                        icon={appointment.mode === 'video' ? faVideo : faPhoneVolume}
                         className="w-5 h-5 text-blue-600 dark:text-blue-400" 
                       />
                     </div>
@@ -94,17 +101,17 @@ export default function UpcomingAppointments() {
                   <div className="flex items-center gap-3">
                     <span className={`
                       inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                      ${appointment.status === 'confirmed'
+                      ${appointment.status === 'scheduled'
                         ? 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400'
                         : 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-600 dark:text-yellow-400'
                       }
                     `}>
-                      {appointment.status === 'confirmed' ? 'Confirmed' : 'Pending'}
+                      {appointment.status === 'scheduled' ? 'Confirmed' : 'Pending'}
                     </span>
                     
                     {/* Action Buttons */}
                     <div className="flex items-center gap-2">
-                      {appointment.type === 'video' && appointment.status === 'confirmed' && (
+                      {appointment.mode === 'video' && appointment.status === 'scheduled' && (
                         <button 
                           onClick={() => setSelectedAppointment(appointment)}
                           className="p-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors"
@@ -137,8 +144,7 @@ export default function UpcomingAppointments() {
       {/* Video Call */}
       {selectedAppointment && (
         <VideoCall
-          patientName={selectedAppointment.patientName}
-          appointmentType="Video Consultation"
+          appointment={selectedAppointment}
           onClose={() => setSelectedAppointment(null)}
         />
       )}

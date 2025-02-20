@@ -1,39 +1,36 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-
-export type AlertPriority = 'error' | 'warning' | 'info';
+import { AlertPriority } from '@/types/dashboard';
 
 interface AlertCardProps {
   title: string;
   description: string;
-  patientName: string;
   priority: AlertPriority;
-  icon: IconDefinition;
-  iconBgColor: string;
-  iconTextColor: string;
+  icon?: IconDefinition;
+  iconBgColor?: string;
+  iconTextColor?: string;
   isLoading?: boolean;
   error?: Error;
 }
 
-const priorityClasses = {
-  error: 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300',
-  warning: 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-300',
-  info: 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300'
+const priorityClasses: Record<AlertPriority['label'], string> = {
+  'High Priority': 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300',
+  'Medium Priority': 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-300',
+  'Low Priority': 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300'
 };
 
-export default function AlertCard({
+const AlertCard: React.FC<AlertCardProps> = ({
   title,
   description,
-  patientName,
   priority,
   icon,
   iconBgColor,
   iconTextColor,
   isLoading = false,
   error
-}: AlertCardProps) {
+}) => {
   const [isLoadingLocal, setIsLoadingLocal] = useState(true);
 
   useEffect(() => {
@@ -66,45 +63,38 @@ export default function AlertCard({
       className={`
         relative rounded-lg p-4 transition-all duration-200
         hover:shadow-md focus-within:shadow-md
-        ${priorityClasses[priority]}
+        ${priorityClasses[priority.label]}
       `}
       role="alert"
       aria-live="polite"
     >
       <div className="flex items-start space-x-4">
-        <div 
-          className={`
-            flex-shrink-0 w-10 h-10 rounded-lg 
-            ${iconBgColor} ${iconTextColor}
-            flex items-center justify-center
-          `}
-        >
-          <FontAwesomeIcon icon={icon} className="w-5 h-5" />
-        </div>
+        {icon && (
+          <div 
+            className={`
+              flex-shrink-0 w-10 h-10 rounded-lg 
+              ${iconBgColor || priority.color.bg} 
+              ${iconTextColor || priority.color.text}
+              flex items-center justify-center
+            `}
+          >
+            <FontAwesomeIcon icon={icon} className="w-5 h-5" />
+          </div>
+        )}
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between">
             <p className="text-sm font-medium truncate">
               {title}
             </p>
-            <span className="text-xs opacity-70">
-              {patientName}
-            </span>
           </div>
           <p className="mt-1 text-sm opacity-90">
             {description}
           </p>
         </div>
       </div>
-
-      <button
-        className="absolute inset-0 w-full h-full rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-blue-400"
-        onClick={() => {
-          // Handle click event
-          console.log('Alert clicked:', title);
-        }}
-        aria-label={`View details for alert: ${title}`}
-      />
     </div>
   );
-}
+};
+
+export default AlertCard;

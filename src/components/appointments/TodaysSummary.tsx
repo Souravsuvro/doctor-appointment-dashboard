@@ -20,7 +20,7 @@ export default function TodaysSummary({ compact = false }: TodaysSummaryProps) {
     return (
       <div>
         <h3 className="text-sm font-medium text-gray-900 dark:text-white mb-3">
-          Today's Overview
+          Today&apos;s Overview
         </h3>
         <div className="space-y-2">
           <div className="flex items-center justify-between text-sm">
@@ -44,7 +44,7 @@ export default function TodaysSummary({ compact = false }: TodaysSummaryProps) {
     <div>
       <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
         <FontAwesomeIcon icon={faUserClock} className="text-blue-500" />
-        Today's Overview
+        Today&apos;s Overview
       </h3>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">

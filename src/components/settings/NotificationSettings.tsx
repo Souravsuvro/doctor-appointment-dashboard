@@ -73,7 +73,7 @@ export default function NotificationSettings() {
   };
 
   return (
-    <div className="p-6">
+    <div className="bg-white dark:bg-[#1a1f37] rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
       <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
         Notification Settings
       </h2>
@@ -83,7 +83,7 @@ export default function NotificationSettings() {
           {settings.map((setting) => (
             <div
               key={setting.id}
-              className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 space-y-4"
+              className="bg-white dark:bg-[#1a1f37] border border-gray-200 dark:border-gray-700 rounded-lg p-4 space-y-4"
             >
               <div className="flex flex-col space-y-1">
                 <h3 className="font-medium text-gray-900 dark:text-white">

@@ -53,7 +53,7 @@ export default function PerformanceMetrics({ dateRange }: PerformanceMetricsProp
       {metrics.map((metric) => (
         <div
           key={metric.title}
-          className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700/30 p-6"
+          className="bg-white dark:bg-[#1a1f37] rounded-lg shadow-sm rounded-xl shadow-sm border border-gray-200 dark:border-gray-700/30 p-6"
         >
           <div className="flex items-start justify-between">
             <div>

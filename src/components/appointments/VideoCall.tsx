@@ -1,34 +1,31 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
-  faVideo, 
-  faVideoSlash, 
   faMicrophone, 
   faMicrophoneSlash, 
-  faPhone, 
-  faMessage,
-  faExpand,
-  faCompress,
-  faUserMd,
-  faUser,
-  faPaperclip,
-  faEllipsisVertical,
-  faRecordVinyl
+  faVideo, 
+  faVideoSlash, 
+  faExpand, 
+  faCompress, 
+  faPaperPlane,
+  faPhoneSlash 
 } from '@fortawesome/free-solid-svg-icons';
+import { Appointment, VideoCallProps } from '@/types/dashboard';
 
-interface VideoCallProps {
-  patientName: string;
-  appointmentType: string;
-  onClose: () => void;
-}
-
-export default function VideoCall({ patientName, appointmentType, onClose }: VideoCallProps) {
+const VideoCall: React.FC<VideoCallProps> = ({ 
+  appointment, 
+  onClose 
+}) => {
   const [isMuted, setIsMuted] = useState(false);
   const [isVideoOn, setIsVideoOn] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [messages, setMessages] = useState<Array<{ text: string; sender: 'doctor' | 'patient'; time: string }>>([]);
+  const [messages, setMessages] = useState<Array<{ 
+    text: string; 
+    sender: 'doctor' | 'patient'; 
+    time: string 
+  }>>([]);
   const [newMessage, setNewMessage] = useState('');
   const [callDuration, setCallDuration] = useState(0);
   const [isRecording, setIsRecording] = useState(false);
@@ -63,199 +60,165 @@ export default function VideoCall({ patientName, appointmentType, onClose }: Vid
     }
   };
 
-  const toggleFullscreen = () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
-      setIsFullscreen(true);
-    } else {
-      document.exitFullscreen();
-      setIsFullscreen(false);
-    }
-  };
+  const toggleMute = () => setIsMuted(!isMuted);
+  const toggleVideo = () => setIsVideoOn(!isVideoOn);
+  const toggleFullscreen = () => setIsFullscreen(!isFullscreen);
+  const toggleRecording = () => setIsRecording(!isRecording);
+  const toggleChat = () => setShowChat(!showChat);
 
   return (
-    <div className="fixed inset-0 z-50 bg-gray-900/90">
-      <div className="fixed inset-0 flex items-center justify-center p-4">
-        <div className={`bg-gray-900 rounded-2xl overflow-hidden shadow-2xl flex flex-col ${isFullscreen ? 'w-full h-full' : 'w-full max-w-6xl h-[85vh]'}`}>
-          {/* Video call header */}
-          <div className="px-6 py-4 bg-gray-800/50 backdrop-blur-sm flex items-center justify-between border-b border-gray-700/50">
-            <div className="flex items-center gap-4">
-              <div className="flex flex-col">
-                <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-                  <FontAwesomeIcon icon={faUserMd} className="text-blue-400" />
-                  {patientName}
-                </h3>
-                <p className="text-sm text-gray-400">{appointmentType}</p>
+    <div 
+      className={`
+        fixed inset-0 z-50 bg-black bg-opacity-90 
+        flex flex-col items-center justify-center 
+        transition-all duration-300 ease-in-out
+        ${isFullscreen ? 'p-0' : 'p-8'}
+      `}
+    >
+      <div className="w-full max-w-4xl h-full max-h-[90vh] bg-gray-900 rounded-lg shadow-2xl flex">
+        {/* Video Section */}
+        <div className="flex-grow relative">
+          <div 
+            className={`
+              w-full h-full bg-gray-800 rounded-l-lg 
+              flex items-center justify-center
+              ${!isVideoOn ? 'opacity-50' : ''}
+            `}
+          >
+            {isVideoOn ? (
+              <div className="text-white text-center">
+                <div className="w-64 h-64 bg-gray-700 rounded-full mx-auto mb-4"></div>
+                <p>{appointment.patientName}</p>
               </div>
-            </div>
-            <div className="flex items-center gap-4">
-              {isRecording && (
-                <div className="flex items-center gap-2 px-3 py-1.5 bg-red-500/20 rounded-full">
-                  <FontAwesomeIcon icon={faRecordVinyl} className="w-3 h-3 text-red-500 animate-pulse" />
-                  <span className="text-sm font-medium text-red-500">Recording</span>
-                </div>
-              )}
-              <div className="flex items-center gap-2 px-3 py-1.5 bg-green-500/20 rounded-full">
-                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                <span className="text-sm font-medium text-green-400">{formatDuration(callDuration)}</span>
-              </div>
-              <button 
-                onClick={() => setShowChat(!showChat)}
-                className={`p-2 rounded-lg transition-colors ${
-                  showChat 
-                    ? 'bg-blue-500/20 text-blue-400' 
-                    : 'text-gray-400 hover:bg-gray-700'
-                }`}
-              >
-                <FontAwesomeIcon icon={faMessage} className="w-4 h-4" />
-              </button>
-              <button className="p-2 text-gray-400 hover:bg-gray-700 rounded-lg transition-colors">
-                <FontAwesomeIcon icon={faEllipsisVertical} className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-
-          <div className="flex-1 flex overflow-hidden">
-            {/* Main content area */}
-            <div className="flex-1 relative bg-gray-800">
-              {/* Main video feed */}
-              <div className="absolute inset-0">
-                {isVideoOn ? (
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-purple-600/20" />
-                ) : (
-                  <div className="absolute inset-0 flex items-center justify-center bg-gray-800">
-                    <div className="flex flex-col items-center gap-4">
-                      <FontAwesomeIcon icon={faUserMd} className="w-20 h-20 text-gray-600" />
-                      <span className="text-gray-500 font-medium">Camera Off</span>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Patient video (floating overlay) */}
-              <div className="absolute top-4 right-4 w-64 aspect-video bg-gray-900 rounded-xl overflow-hidden shadow-lg border border-gray-700/50">
-                <div className="absolute inset-0 flex items-center justify-center bg-gray-800">
-                  <div className="flex flex-col items-center gap-2">
-                    <FontAwesomeIcon icon={faUser} className="w-12 h-12 text-gray-600" />
-                    <span className="text-sm text-gray-500">Patient's Camera</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Controls overlay */}
-              <div className="absolute bottom-0 inset-x-0 p-6 bg-gradient-to-t from-gray-900 via-gray-900/80 to-transparent">
-                <div className="flex items-center justify-center gap-4">
-                  <button
-                    onClick={() => setIsMuted(!isMuted)}
-                    className={`p-4 rounded-full transition-all transform hover:scale-105 ${
-                      isMuted 
-                        ? 'bg-red-500 hover:bg-red-600 shadow-lg shadow-red-500/30' 
-                        : 'bg-gray-700 hover:bg-gray-600'
-                    }`}
-                  >
-                    <FontAwesomeIcon 
-                      icon={isMuted ? faMicrophoneSlash : faMicrophone} 
-                      className="w-5 h-5 text-white"
-                    />
-                  </button>
-                  <button
-                    onClick={() => setIsVideoOn(!isVideoOn)}
-                    className={`p-4 rounded-full transition-all transform hover:scale-105 ${
-                      !isVideoOn 
-                        ? 'bg-red-500 hover:bg-red-600 shadow-lg shadow-red-500/30' 
-                        : 'bg-gray-700 hover:bg-gray-600'
-                    }`}
-                  >
-                    <FontAwesomeIcon 
-                      icon={isVideoOn ? faVideo : faVideoSlash} 
-                      className="w-5 h-5 text-white"
-                    />
-                  </button>
-                  <button
-                    onClick={() => setIsRecording(!isRecording)}
-                    className={`p-4 rounded-full transition-all transform hover:scale-105 ${
-                      isRecording 
-                        ? 'bg-red-500 hover:bg-red-600 shadow-lg shadow-red-500/30' 
-                        : 'bg-gray-700 hover:bg-gray-600'
-                    }`}
-                  >
-                    <FontAwesomeIcon 
-                      icon={faRecordVinyl} 
-                      className="w-5 h-5 text-white"
-                    />
-                  </button>
-                  <button
-                    onClick={onClose}
-                    className="p-4 rounded-full bg-red-500 hover:bg-red-600 transition-all transform hover:scale-105 shadow-lg shadow-red-500/30"
-                  >
-                    <FontAwesomeIcon icon={faPhone} className="w-5 h-5 text-white" />
-                  </button>
-                  <button
-                    onClick={toggleFullscreen}
-                    className="p-4 rounded-full bg-gray-700 hover:bg-gray-600 transition-all transform hover:scale-105"
-                  >
-                    <FontAwesomeIcon 
-                      icon={isFullscreen ? faCompress : faExpand} 
-                      className="w-5 h-5 text-white"
-                    />
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Chat sidebar */}
-            {showChat && (
-              <div className="w-96 border-l border-gray-700/50 bg-gray-800/50 backdrop-blur-sm flex flex-col">
-                <div className="flex-1 p-4 overflow-y-auto space-y-4">
-                  {messages.map((message, index) => (
-                    <div
-                      key={index}
-                      className={`flex flex-col ${
-                        message.sender === 'doctor' ? 'items-end' : 'items-start'
-                      }`}
-                    >
-                      <div className={`max-w-[80%] rounded-2xl px-4 py-2 ${
-                        message.sender === 'doctor'
-                          ? 'bg-blue-500 text-white'
-                          : 'bg-gray-700 text-gray-200'
-                      }`}>
-                        <p className="text-sm">{message.text}</p>
-                      </div>
-                      <span className="text-xs text-gray-500 mt-1">{message.time}</span>
-                    </div>
-                  ))}
-                </div>
-                <div className="p-4 border-t border-gray-700/50">
-                  <form onSubmit={handleSendMessage} className="space-y-4">
-                    <div className="flex items-center gap-2">
-                      <button
-                        type="button"
-                        className="p-2 text-gray-400 hover:text-gray-300 hover:bg-gray-700 rounded-lg transition-colors"
-                      >
-                        <FontAwesomeIcon icon={faPaperclip} className="w-4 h-4" />
-                      </button>
-                      <input
-                        type="text"
-                        value={newMessage}
-                        onChange={(e) => setNewMessage(e.target.value)}
-                        placeholder="Type a message..."
-                        className="flex-1 px-4 py-2 bg-gray-700 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400"
-                      />
-                      <button
-                        type="submit"
-                        className="p-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        disabled={!newMessage.trim()}
-                      >
-                        <FontAwesomeIcon icon={faMessage} className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </form>
-                </div>
+            ) : (
+              <div className="text-white text-center">
+                <FontAwesomeIcon icon={faVideoSlash} className="w-16 h-16 text-gray-500 mb-4" />
+                <p>Video is turned off</p>
               </div>
             )}
           </div>
+
+          {/* Call Controls */}
+          <div className="absolute bottom-4 left-0 right-0 flex justify-center space-x-4">
+            <button 
+              onClick={toggleMute}
+              className={`
+                p-3 rounded-full transition-colors
+                ${isMuted ? 'bg-red-500 text-white' : 'bg-gray-700 text-gray-300'}
+              `}
+              title={isMuted ? 'Unmute' : 'Mute'}
+            >
+              <FontAwesomeIcon 
+                icon={isMuted ? faMicrophoneSlash : faMicrophone} 
+                className="w-5 h-5" 
+              />
+            </button>
+
+            <button 
+              onClick={toggleVideo}
+              className={`
+                p-3 rounded-full transition-colors
+                ${!isVideoOn ? 'bg-red-500 text-white' : 'bg-gray-700 text-gray-300'}
+              `}
+              title={isVideoOn ? 'Turn off video' : 'Turn on video'}
+            >
+              <FontAwesomeIcon 
+                icon={isVideoOn ? faVideo : faVideoSlash} 
+                className="w-5 h-5" 
+              />
+            </button>
+
+            <button 
+              onClick={onClose}
+              className="p-3 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+              title="End call"
+            >
+              <FontAwesomeIcon icon={faPhoneSlash} className="w-5 h-5" />
+            </button>
+
+            <button 
+              onClick={toggleFullscreen}
+              className="p-3 bg-gray-700 text-gray-300 rounded-full hover:bg-gray-600 transition-colors"
+              title={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
+            >
+              <FontAwesomeIcon 
+                icon={isFullscreen ? faCompress : faExpand} 
+                className="w-5 h-5" 
+              />
+            </button>
+          </div>
         </div>
+
+        {/* Chat Section */}
+        {showChat && (
+          <div className="w-96 bg-gray-800 rounded-r-lg p-4 flex flex-col">
+            <div className="flex-grow overflow-y-auto mb-4">
+              {messages.map((message, index) => (
+                <div 
+                  key={index} 
+                  className={`
+                    mb-2 p-2 rounded-lg max-w-[80%]
+                    ${message.sender === 'doctor' 
+                      ? 'bg-blue-600 text-white self-end' 
+                      : 'bg-gray-700 text-white self-start'}
+                  `}
+                >
+                  <p className="text-sm">{message.text}</p>
+                  <span className="text-xs opacity-70 block text-right">{message.time}</span>
+                </div>
+              ))}
+            </div>
+
+            <form onSubmit={handleSendMessage} className="flex space-x-2">
+              <input 
+                type="text" 
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
+                placeholder="Type a message..."
+                className="flex-grow bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <button 
+                type="submit" 
+                className="bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                <FontAwesomeIcon icon={faPaperPlane} className="w-5 h-5" />
+              </button>
+            </form>
+          </div>
+        )}
+      </div>
+
+      {/* Call Information */}
+      <div className="mt-4 text-white flex items-center space-x-4">
+        <span>Call Duration: {formatDuration(callDuration)}</span>
+        <span>Patient: {appointment.patientName}</span>
+        <span>Appointment Type: {appointment.type}</span>
+        {isRecording && (
+          <span className="text-red-500 flex items-center">
+            <span className="w-2 h-2 bg-red-500 rounded-full mr-2 animate-pulse"></span>
+            Recording
+          </span>
+        )}
+        <button 
+          onClick={toggleRecording}
+          className={`
+            p-2 rounded-lg transition-colors
+            ${isRecording 
+              ? 'bg-red-500 text-white' 
+              : 'bg-gray-700 text-gray-300 hover:bg-gray-600'}
+          `}
+        >
+          {isRecording ? 'Stop Recording' : 'Start Recording'}
+        </button>
+        <button 
+          onClick={toggleChat}
+          className="p-2 bg-gray-700 text-gray-300 rounded-lg hover:bg-gray-600 transition-colors"
+        >
+          {showChat ? 'Hide Chat' : 'Show Chat'}
+        </button>
       </div>
     </div>
   );
-}
+};
+
+export default VideoCall;

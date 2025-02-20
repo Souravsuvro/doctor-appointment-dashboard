@@ -1,70 +1,35 @@
-'use client';
-
-import { faCircle, faEllipsisVertical, faVideo } from '@fortawesome/free-solid-svg-icons';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
-
+import { faCircle, faEllipsisVertical, faVideo } from '@fortawesome/free-solid-svg-icons';
+import { Appointment, VideoCallProps } from '@/types/dashboard';
 import VideoCall from './VideoCall';
 
-type AppointmentStatus = 'upcoming' | 'completed' | 'cancelled';
+type AppointmentStatus = Appointment['status'];
 
-interface Appointment {
-  id: number;
-  patientName: string;
-  date: string;
-  time: string;
-  type: string;
-  status: AppointmentStatus;
-  avatar: string;
-}
-
-// Mock appointments data
 const appointments: Appointment[] = [
   {
     id: 1,
-    patientName: 'Sarah Johnson',
-    date: '2025-02-15',
+    patientName: 'John Doe',
     time: '09:00 AM',
-    type: 'Check-up',
-    status: 'upcoming',
-    avatar: '🧑'
+    type: 'consultation',
+    mode: 'video',
+    status: 'scheduled',
+    duration: 30,
+    notes: 'Follow-up consultation'
   },
-  {
-    id: 2,
-    patientName: 'Michael Brown',
-    date: '2025-02-15',
-    time: '10:30 AM',
-    type: 'Follow-up',
-    status: 'completed',
-    avatar: '👨'
-  },
-  {
-    id: 3,
-    patientName: 'Emma Wilson',
-    date: '2025-02-15',
-    time: '02:00 PM',
-    type: 'Consultation',
-    status: 'cancelled',
-    avatar: '👩'
-  },
-  {
-    id: 4,
-    patientName: 'James Davis',
-    date: '2025-02-16',
-    time: '11:00 AM',
-    type: 'Check-up',
-    status: 'cancelled',
-    avatar: '🧔'
-  }
+  // Add more appointments as needed
 ];
 
 interface AppointmentListProps {
-  searchQuery: string;
-  filterStatus: 'all' | AppointmentStatus;
+  searchQuery?: string;
+  filterStatus?: string;
 }
 
-export default function AppointmentList({ searchQuery = '', filterStatus = 'all' }: AppointmentListProps) {
-  const [selectedAppointment, setSelectedAppointment] = useState<number | null>(null);
+const AppointmentList: React.FC<AppointmentListProps> = ({ 
+  searchQuery = '', 
+  filterStatus = 'all' 
+}) => {
+  const [selectedAppointment, setSelectedAppointment] = useState<Appointment | null>(null);
   const [isVideoCallOpen, setIsVideoCallOpen] = useState(false);
 
   const filteredAppointments = appointments.filter(appointment => {
@@ -77,76 +42,64 @@ export default function AppointmentList({ searchQuery = '', filterStatus = 'all'
     return matchesSearch && matchesFilter;
   });
 
-  const getStatusColor = (status: AppointmentStatus) => {
-    switch (status) {
-      case 'upcoming':
-        return 'text-green-500';
-      case 'completed':
-        return 'text-blue-500';
-      case 'cancelled':
-        return 'text-red-500';
-      default:
-        return 'text-gray-500';
-    }
+  const handleVideoCall = (appointment: Appointment) => {
+    setSelectedAppointment(appointment);
+    setIsVideoCallOpen(true);
+  };
+
+  const handleCloseVideoCall = () => {
+    setIsVideoCallOpen(false);
+    setSelectedAppointment(null);
   };
 
   return (
     <div className="divide-y divide-gray-200 dark:divide-gray-700">
       {filteredAppointments.length === 0 ? (
-        <div className="p-4 text-center text-gray-500 dark:text-gray-400">
-          No appointments found matching your criteria
+        <div className="text-center py-4 text-gray-500">
+          No appointments found
         </div>
       ) : (
-        filteredAppointments.map((appointment) => (
+        filteredAppointments.map((appointment, index) => (
           <div 
-            key={appointment.id}
-            className="p-4 hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors"
+            key={appointment.id} 
+            className="flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
           >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                <span className="text-2xl">{appointment.avatar}</span>
-                <div>
-                  <h3 className="text-sm font-medium text-gray-900 dark:text-white">
-                    {appointment.patientName}
-                  </h3>
-                  <div className="flex items-center mt-1 space-x-2 text-sm text-gray-500 dark:text-gray-400">
-                    <span>{appointment.date}</span>
-                    <span>•</span>
-                    <span>{appointment.time}</span>
-                    <span>•</span>
-                    <span>{appointment.type}</span>
-                    <span>•</span>
-                    <span className="flex items-center">
-                      <FontAwesomeIcon 
-                        icon={faCircle} 
-                        className={`w-2 h-2 mr-1 ${getStatusColor(appointment.status)}`} 
-                      />
-                      <span className="capitalize">{appointment.status}</span>
-                    </span>
-                  </div>
-                </div>
+            <div className="flex items-center space-x-4">
+              <div className="relative">
+                <FontAwesomeIcon 
+                  icon={faCircle} 
+                  className={`w-3 h-3 ${
+                    appointment.status === 'scheduled' ? 'text-green-500' :
+                    appointment.status === 'completed' ? 'text-blue-500' :
+                    'text-red-500'
+                  }`} 
+                />
               </div>
-              
-              <div className="flex items-center space-x-2">
-                {appointment.status === 'upcoming' && (
-                  <button
-                    onClick={() => {
-                      setSelectedAppointment(appointment.id);
-                      setIsVideoCallOpen(true);
-                    }}
-                    className="p-2 text-gray-400 hover:text-blue-500 transition-colors"
-                    title="Start video call"
-                  >
-                    <FontAwesomeIcon icon={faVideo} />
-                  </button>
-                )}
+              <div>
+                <h3 className="text-sm font-medium text-gray-900 dark:text-white">
+                  {appointment.patientName}
+                </h3>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                  {appointment.type} - {appointment.time}
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center space-x-2">
+              {appointment.mode === 'video' && (
                 <button
-                  className="p-2 text-gray-400 hover:text-gray-500 transition-colors"
-                  title="More options"
+                  onClick={() => handleVideoCall(appointment)}
+                  className="p-2 text-gray-400 hover:text-blue-500 transition-colors"
+                  title="Start video call"
                 >
-                  <FontAwesomeIcon icon={faEllipsisVertical} />
+                  <FontAwesomeIcon icon={faVideo} className="w-4 h-4" />
                 </button>
-              </div>
+              )}
+              <button 
+                className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
+                title="More options"
+              >
+                <FontAwesomeIcon icon={faEllipsisVertical} className="w-4 h-4" />
+              </button>
             </div>
           </div>
         ))
@@ -154,13 +107,12 @@ export default function AppointmentList({ searchQuery = '', filterStatus = 'all'
 
       {isVideoCallOpen && selectedAppointment && (
         <VideoCall
-          appointment={appointments.find(a => a.id === selectedAppointment)!}
-          onClose={() => {
-            setIsVideoCallOpen(false);
-            setSelectedAppointment(null);
-          }}
+          appointment={selectedAppointment}
+          onClose={handleCloseVideoCall}
         />
       )}
     </div>
   );
-}
+};
+
+export default AppointmentList;
