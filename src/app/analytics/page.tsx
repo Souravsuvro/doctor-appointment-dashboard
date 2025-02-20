@@ -1,15 +1,16 @@
 'use client';
 
-import { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faFilter,
   faDownload
 } from '@fortawesome/free-solid-svg-icons';
-import PerformanceMetrics from '@/components/analytics/PerformanceMetrics';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState } from 'react';
+
 import AppointmentStats from '@/components/analytics/AppointmentStats';
-import RevenueChart from '@/components/analytics/RevenueChart';
 import PatientDemographics from '@/components/analytics/PatientDemographics';
+import PerformanceMetrics from '@/components/analytics/PerformanceMetrics';
+import RevenueChart from '@/components/analytics/RevenueChart';
 import TreatmentInsights from '@/components/analytics/TreatmentInsights';
 import PerformanceOverview from '@/components/PerformanceOverview';
 
@@ -77,27 +78,27 @@ export default function AnalyticsPage() {
 
           {/* Performance Metrics */}
           <div className="lg:col-span-2">
-            <PerformanceMetrics dateRange={selectedDateRange} />
+            <PerformanceMetrics />
           </div>
 
           {/* Appointment Stats */}
           <div>
-            <AppointmentStats dateRange={selectedDateRange} />
+            <AppointmentStats />
           </div>
 
           {/* Revenue Chart */}
           <div>
-            <RevenueChart dateRange={selectedDateRange} />
+            <RevenueChart />
           </div>
 
           {/* Patient Demographics */}
           <div>
-            <PatientDemographics dateRange={selectedDateRange} />
+            <PatientDemographics />
           </div>
 
           {/* Treatment Insights */}
           <div>
-            <TreatmentInsights dateRange={selectedDateRange} />
+            <TreatmentInsights />
           </div>
         </div>
       </div>
