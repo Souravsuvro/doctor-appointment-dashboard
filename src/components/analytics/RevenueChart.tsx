@@ -15,6 +15,8 @@ import {
   Legend,
 } from 'chart.js';
 
+import { DateRangeProps } from '@/types/common';
+
 if (typeof window !== 'undefined') {
   ChartJS.register(
     CategoryScale,
@@ -71,11 +73,7 @@ const options: ChartOptions<'bar'> = {
   },
 };
 
-interface RevenueChartProps {
-  dateRange: string;
-}
-
-export default function RevenueChart({ dateRange }: RevenueChartProps) {
+export default function RevenueChart({ dateRange }: DateRangeProps) {
   const totalRevenue = data.datasets[0].data.reduce((a, b) => a + b, 0);
   const averageRevenue = totalRevenue / data.datasets[0].data.length;
 

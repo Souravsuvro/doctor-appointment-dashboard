@@ -20,9 +20,7 @@ if (typeof window !== 'undefined') {
   );
 }
 
-interface _PatientDemographicsProps {
-  _dateRange: string;
-}
+import { DateRangeProps } from '@/types/common';
 
 // Mock data
 const _ageData = {
@@ -73,7 +71,7 @@ const options: ChartOptions<'doughnut'> = {
   cutout: '60%'
 };
 
-export default function PatientDemographics() {
+export default function PatientDemographics({ dateRange }: DateRangeProps) {
   return (
     <div className="bg-white dark:bg-[#1a1f37] rounded-lg shadow-sm rounded-xl shadow-sm border border-gray-200 dark:border-gray-700/30 p-6">
       <div className="flex flex-col space-y-6">

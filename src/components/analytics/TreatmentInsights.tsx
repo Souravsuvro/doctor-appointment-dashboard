@@ -1,11 +1,8 @@
 'use client';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
-
-interface TreatmentInsightsProps {
-  dateRange: string;
-}
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { DateRangeProps } from '@/types/common';
 
 // Mock data
 const treatments = [
@@ -46,7 +43,7 @@ const treatments = [
   }
 ];
 
-export default function TreatmentInsights({ dateRange }: TreatmentInsightsProps) {
+export default function TreatmentInsights({ dateRange }: DateRangeProps) {
   const totalRevenue = treatments.reduce((sum, treatment) => sum + treatment.revenue, 0);
   
   return (

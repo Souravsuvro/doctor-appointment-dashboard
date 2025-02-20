@@ -1,16 +1,13 @@
 'use client';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faUserPlus,
   faCalendarCheck,
   faChartLine,
   faClock
 } from '@fortawesome/free-solid-svg-icons';
-
-interface PerformanceMetricsProps {
-  dateRange: string;
-}
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { DateRangeProps } from '@/types/common';
 
 const metrics = [
   {
@@ -47,7 +44,7 @@ const metrics = [
   }
 ];
 
-export default function PerformanceMetrics({ dateRange }: PerformanceMetricsProps) {
+export default function PerformanceMetrics({ dateRange }: DateRangeProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {metrics.map((metric) => (

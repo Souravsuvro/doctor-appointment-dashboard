@@ -28,9 +28,7 @@ ChartJS.register(
   Filler
 );
 
-interface AppointmentStatsProps {
-  _dateRange: string;
-}
+import { DateRangeProps } from '@/types/common';
 
 // Mock data
 const data = {
@@ -96,7 +94,7 @@ const options: ChartOptions<'line'> = {
   }
 };
 
-export default function AppointmentStats({ _dateRange }: AppointmentStatsProps) {
+export default function AppointmentStats({ dateRange }: DateRangeProps) {
   return (
     <div className="bg-white dark:bg-[#1a1f37] rounded-lg shadow-sm rounded-xl shadow-sm border border-gray-200 dark:border-gray-700/30 p-6">
       <div className="flex flex-col space-y-4">
@@ -131,7 +129,7 @@ export default function AppointmentStats({ _dateRange }: AppointmentStatsProps) 
               167
             </p>
             <p className="mt-1 text-sm text-green-600 dark:text-green-400">
-              +8.5% vs prev. {_dateRange}
+              +8.5% vs prev. {dateRange}
             </p>
           </div>
           <div>
@@ -142,7 +140,7 @@ export default function AppointmentStats({ _dateRange }: AppointmentStatsProps) 
               89%
             </p>
             <p className="mt-1 text-sm text-green-600 dark:text-green-400">
-              +2.3% vs prev. {_dateRange}
+              +2.3% vs prev. {dateRange}
             </p>
           </div>
         </div>
