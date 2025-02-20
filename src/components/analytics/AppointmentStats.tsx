@@ -1,19 +1,9 @@
 'use client';
 
 import 'chart.js/auto';
-import { 
-  Chart as ChartJS, 
-  ChartOptions, 
-  ScaleOptionsByType as _ScaleOptionsByType, 
-  CategoryScale, 
-  LinearScale, 
-  PointElement, 
-  LineElement, 
-  Title, 
-  Tooltip, 
-  Legend, 
-  Filler 
-} from 'chart.js';
+import { Chart as ChartJS, ChartOptions, ScaleOptionsByType as _ScaleOptionsByType, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
+
+ 
 
 import dynamic from 'next/dynamic';
 import { DateRangeProps } from '@/types/common';
