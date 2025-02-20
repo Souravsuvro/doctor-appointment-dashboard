@@ -1,22 +1,23 @@
-import { 
-  _faCalendarCheck, 
-  faVideo,
-  _faHospital,
-  _faClock,
-  _faEllipsisVertical,
-  _faCheck,
-  _faTimes,
-  _faEdit,
-  _faUserDoctor,
-  _faFilter,
-  _faBell,
-  _faCalendarPlus,
-  _faChevronDown
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState, useEffect } from 'react';
 
-import { Appointment, _VideoCallProps } from '@/types/dashboard';
+import { 
+  faCalendarCheck, 
+  faVideo, 
+  faHospital,
+  faClock,
+  faEllipsisVertical,
+  faCheck,
+  faTimes,
+  faEdit,
+  faUserDoctor,
+  faFilter,
+  faBell,
+  faCalendarPlus as _faCalendarPlus, 
+  faChevronDown as _faChevronDown 
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import { Appointment, VideoCallProps } from '@/types/dashboard';
 
 import Calendar from '../Calendar';
 
@@ -243,14 +244,14 @@ const TodayAppointments: React.FC = () => {
                 onClick={() => setShowFilters(!showFilters)}
                 className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/50 relative"
               >
-                <FontAwesomeIcon icon={_faFilter} className="w-5 h-5" />
+                <FontAwesomeIcon icon={faFilter} className="w-5 h-5" />
               </button>
               <div className="relative">
                 <button
                   onClick={() => setShowNotifications(!showNotifications)}
                   className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/50 relative"
                 >
-                  <FontAwesomeIcon icon={_faBell} className="w-5 h-5" />
+                  <FontAwesomeIcon icon={faBell} className="w-5 h-5" />
                   {notifications.length > 0 && (
                     <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                       {notifications.length}
@@ -378,7 +379,7 @@ const TodayAppointments: React.FC = () => {
               >
                 <div className="flex items-center gap-4">
                   <FontAwesomeIcon 
-                    icon={appointment.mode === 'video' ? faVideo : _faHospital}
+                    icon={appointment.mode === 'video' ? faVideo : faHospital}
                     className={`
                       w-8 h-8 p-2 rounded-lg
                       ${appointment.mode === 'video' 
@@ -401,11 +402,11 @@ const TodayAppointments: React.FC = () => {
                     </button>
                     <div className="flex items-center gap-3 mt-1">
                       <div className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400">
-                        <FontAwesomeIcon icon={_faClock} className="w-3.5 h-3.5" />
+                        <FontAwesomeIcon icon={faClock} className="w-3.5 h-3.5" />
                         {appointment.time}
                       </div>
                       <div className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400">
-                        <FontAwesomeIcon icon={appointment.mode === 'video' ? faVideo : _faHospital} className="w-3.5 h-3.5" />
+                        <FontAwesomeIcon icon={appointment.mode === 'video' ? faVideo : faHospital} className="w-3.5 h-3.5" />
                         {appointment.mode === 'video' ? 'Video Call' : 'In-person'}
                       </div>
                     </div>
@@ -427,7 +428,7 @@ const TodayAppointments: React.FC = () => {
                       onClick={() => setShowMenu(showMenu === appointment.id ? null : appointment.id)}
                       className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/50"
                     >
-                      <FontAwesomeIcon icon={_faEllipsisVertical} className="w-5 h-5" />
+                      <FontAwesomeIcon icon={faEllipsisVertical} className="w-5 h-5" />
                     </button>
 
                     {showMenu === appointment.id && (
@@ -436,19 +437,19 @@ const TodayAppointments: React.FC = () => {
                           onClick={() => handleReschedule(appointment)}
                           className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700/50 flex items-center gap-2"
                         >
-                          <FontAwesomeIcon icon={_faEdit} className="w-4 h-4" />
+                          <FontAwesomeIcon icon={faEdit} className="w-4 h-4" />
                           Reschedule
                         </button>
                         <button
                           className="w-full px-4 py-2 text-left text-sm text-green-600 dark:text-green-400 hover:bg-gray-100 dark:hover:bg-gray-700/50 flex items-center gap-2"
                         >
-                          <FontAwesomeIcon icon={_faCheck} className="w-4 h-4" />
+                          <FontAwesomeIcon icon={faCheck} className="w-4 h-4" />
                           Approve
                         </button>
                         <button
                           className="w-full px-4 py-2 text-left text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700/50 flex items-center gap-2"
                         >
-                          <FontAwesomeIcon icon={_faTimes} className="w-4 h-4" />
+                          <FontAwesomeIcon icon={faTimes} className="w-4 h-4" />
                           Cancel
                         </button>
                       </div>
@@ -474,7 +475,7 @@ const TodayAppointments: React.FC = () => {
                   onClick={() => setShowPatientDetails(false)}
                   className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                 >
-                  <FontAwesomeIcon icon={_faTimes} className="w-5 h-5" />
+                  <FontAwesomeIcon icon={faTimes} className="w-5 h-5" />
                 </button>
               </div>
 
@@ -636,7 +637,7 @@ const TodayAppointments: React.FC = () => {
                   }}
                   className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                 >
-                  <FontAwesomeIcon icon={_faTimes} className="w-5 h-5" />
+                  <FontAwesomeIcon icon={faTimes} className="w-5 h-5" />
                 </button>
               </div>
 
