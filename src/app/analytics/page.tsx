@@ -83,7 +83,7 @@ export default function AnalyticsPage() {
 
           {/* Appointment Stats */}
           <div>
-            <AppointmentStats dateRange={selectedDateRange} />
+            <AppointmentStats _dateRange={selectedDateRange} />
           </div>
 
           {/* Revenue Chart */}
