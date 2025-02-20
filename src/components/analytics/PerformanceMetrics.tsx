@@ -2,6 +2,7 @@
 
 import { faUserPlus, faCalendarCheck, faChartLine, faClock } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// eslint-disable-next-line import/order
 import React from 'react';
 import { DateRangeProps } from '@/types/common';
 
