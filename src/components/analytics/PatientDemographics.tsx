@@ -1,13 +1,15 @@
 'use client';
 
+import 'chart.js/auto';
+import { Chart as ChartJS, ChartOptions } from 'chart.js';
 import dynamic from 'next/dynamic';
+
 const Doughnut = dynamic(() => import('react-chartjs-2').then(mod => mod.Doughnut), { ssr: false });
 
 import {
-  Chart as ChartJS,
   ArcElement,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 
 if (typeof window !== 'undefined') {
@@ -18,12 +20,12 @@ if (typeof window !== 'undefined') {
   );
 }
 
-interface PatientDemographicsProps {
-  dateRange: string;
+interface _PatientDemographicsProps {
+  _dateRange: string;
 }
 
 // Mock data
-const ageData = {
+const _ageData = {
   labels: ['18-24', '25-34', '35-44', '45-54', '55+'],
   datasets: [
     {
@@ -40,7 +42,7 @@ const ageData = {
   ]
 };
 
-const genderData = {
+const _genderData = {
   labels: ['Male', 'Female', 'Other'],
   datasets: [
     {
@@ -55,22 +57,23 @@ const genderData = {
   ]
 };
 
-const options = {
+const options: ChartOptions<'doughnut'> = {
   responsive: true,
-  maintainAspectRatio: false,
   plugins: {
     legend: {
-      position: 'bottom' as const,
+      position: 'bottom',
       labels: {
         usePointStyle: true,
-        padding: 20,
-      }
-    }
+      },
+    },
+    title: {
+      display: false,
+    },
   },
   cutout: '60%'
 };
 
-export default function PatientDemographics({ dateRange }: PatientDemographicsProps) {
+export default function PatientDemographics() {
   return (
     <div className="bg-white dark:bg-[#1a1f37] rounded-lg shadow-sm rounded-xl shadow-sm border border-gray-200 dark:border-gray-700/30 p-6">
       <div className="flex flex-col space-y-6">
@@ -85,7 +88,7 @@ export default function PatientDemographics({ dateRange }: PatientDemographicsPr
               Age Distribution
             </h4>
             <div className="h-[200px] relative">
-              <Doughnut data={ageData} options={options} />
+              <Doughnut data={_ageData} options={options} />
             </div>
           </div>
 
@@ -95,7 +98,7 @@ export default function PatientDemographics({ dateRange }: PatientDemographicsPr
               Gender Distribution
             </h4>
             <div className="h-[200px] relative">
-              <Doughnut data={genderData} options={options} />
+              <Doughnut data={_genderData} options={options} />
             </div>
           </div>
         </div>
@@ -116,7 +119,7 @@ export default function PatientDemographics({ dateRange }: PatientDemographicsPr
             </li>
             <li className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
               <span className="w-2 h-2 rounded-full bg-green-500" />
-              25% increase in 25-34 age group vs prev. {dateRange}
+              25% increase in 25-34 age group vs prev. 
             </li>
           </ul>
         </div>

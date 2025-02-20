@@ -1,13 +1,13 @@
 'use client';
 
-import { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faXmark,
   faPlus,
   faMinus,
   faTrash
 } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState } from 'react';
 
 interface NewPrescriptionModalProps {
   isOpen: boolean;
@@ -65,8 +65,7 @@ export default function NewPrescriptionModal({ isOpen, onClose }: NewPrescriptio
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle prescription submission
-    console.log({ patient, diagnosis, medications });
+    // Removed console.log statement
     onClose();
   };
 

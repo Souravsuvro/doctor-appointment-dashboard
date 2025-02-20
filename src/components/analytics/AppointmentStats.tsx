@@ -1,10 +1,12 @@
 'use client';
 
+import 'chart.js/auto';
+import { Chart as ChartJS, ChartOptions } from 'chart.js';
 import dynamic from 'next/dynamic';
+
 const Line = dynamic(() => import('react-chartjs-2').then(mod => mod.Line), { ssr: false });
 
 import {
-  Chart as ChartJS,
   CategoryScale,
   LinearScale,
   PointElement,
@@ -15,21 +17,19 @@ import {
   Filler
 } from 'chart.js';
 
-if (typeof window !== 'undefined') {
-  ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend,
-    Filler
-  );
-}
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler
+);
 
 interface AppointmentStatsProps {
-  dateRange: string;
+  _dateRange: string;
 }
 
 // Mock data
@@ -55,7 +55,7 @@ const data = {
   ]
 };
 
-const options = {
+const options: ChartOptions<'line'> = {
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
@@ -96,7 +96,7 @@ const options = {
   }
 };
 
-export default function AppointmentStats({ dateRange }: AppointmentStatsProps) {
+export default function AppointmentStats({ _dateRange }: AppointmentStatsProps) {
   return (
     <div className="bg-white dark:bg-[#1a1f37] rounded-lg shadow-sm rounded-xl shadow-sm border border-gray-200 dark:border-gray-700/30 p-6">
       <div className="flex flex-col space-y-4">
@@ -131,7 +131,7 @@ export default function AppointmentStats({ dateRange }: AppointmentStatsProps) {
               167
             </p>
             <p className="mt-1 text-sm text-green-600 dark:text-green-400">
-              +8.5% vs prev. {dateRange}
+              +8.5% vs prev. {_dateRange}
             </p>
           </div>
           <div>
@@ -142,7 +142,7 @@ export default function AppointmentStats({ dateRange }: AppointmentStatsProps) {
               89%
             </p>
             <p className="mt-1 text-sm text-green-600 dark:text-green-400">
-              +2.3% vs prev. {dateRange}
+              +2.3% vs prev. {_dateRange}
             </p>
           </div>
         </div>

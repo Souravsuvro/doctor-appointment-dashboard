@@ -1,5 +1,3 @@
-import React, { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faVideo,
   faHospital,
@@ -15,9 +13,14 @@ import {
   faCalendarPlus,
   faChevronDown
 } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useState, useEffect } from 'react';
+
 import { Appointment, VideoCallProps } from '@/types/dashboard';
-import VideoCall from './VideoCall';
+
 import Calendar from '../Calendar';
+
+import VideoCall from './VideoCall';
 
 interface Notification {
   id: number;
@@ -121,7 +124,6 @@ const TodayAppointments: React.FC = () => {
       filtered = filtered.filter(apt => apt.status === filters.status);
     }
     
-    console.log('Filtered Appointments:', filtered.length, filtered);
     setFilteredAppointments(filtered);
   }, [filters, appointments]);
 

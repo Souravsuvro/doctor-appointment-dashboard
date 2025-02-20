@@ -1,7 +1,7 @@
 'use client';
 
-import { Chart as ChartJS, ChartOptions, Scale, Tick, ScaleOptionsByType, CoreScaleOptions } from 'chart.js';
 import 'chart.js/auto';
+import { Chart as ChartJS, ChartOptions, Scale, CoreScaleOptions } from 'chart.js';
 import dynamic from 'next/dynamic';
 
 const Bar = dynamic(() => import('react-chartjs-2').then(mod => mod.Bar), { ssr: false });
@@ -57,11 +57,8 @@ const options: ChartOptions<'bar'> = {
         display: false,
       },
       ticks: {
-        callback: function(this: Scale<CoreScaleOptions>, tickValue: string | number) {
-          // Convert to number if it's a string
-          const value = typeof tickValue === 'string' ? parseFloat(tickValue) : tickValue;
-          
-          // Format as currency string
+        callback: function(this: Scale<CoreScaleOptions>, _tickValue: string | number) {
+          const value = typeof _tickValue === 'string' ? parseFloat(_tickValue) : _tickValue;
           return '$' + value.toLocaleString();
         },
       },
