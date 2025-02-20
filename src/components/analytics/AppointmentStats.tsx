@@ -14,7 +14,6 @@ import {
   Legend, 
   Filler 
 } from 'chart.js';
-
 import dynamic from 'next/dynamic';
 import { DateRangeProps } from '@/types/common';
 
