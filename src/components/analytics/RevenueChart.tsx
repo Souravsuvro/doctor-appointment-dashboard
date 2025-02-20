@@ -1,16 +1,18 @@
 'use client';
 
+import { Chart as ChartJS, ChartOptions, Scale, Tick, ScaleOptionsByType, CoreScaleOptions } from 'chart.js';
+import 'chart.js/auto';
 import dynamic from 'next/dynamic';
+
 const Bar = dynamic(() => import('react-chartjs-2').then(mod => mod.Bar), { ssr: false });
 
 import {
-  Chart as ChartJS,
   CategoryScale,
   LinearScale,
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 
 if (typeof window !== 'undefined') {
@@ -37,7 +39,7 @@ const data = {
   ]
 };
 
-const options = {
+const options: ChartOptions<'bar'> = {
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
@@ -53,22 +55,24 @@ const options = {
       beginAtZero: true,
       grid: {
         display: false,
-        drawBorder: false,
       },
       ticks: {
-        callback: function(this: any, tickValue: number) {
-          return '$' + tickValue.toLocaleString();
+        callback: function(this: Scale<CoreScaleOptions>, tickValue: string | number) {
+          // Convert to number if it's a string
+          const value = typeof tickValue === 'string' ? parseFloat(tickValue) : tickValue;
+          
+          // Format as currency string
+          return '$' + value.toLocaleString();
         },
       },
     },
     x: {
       grid: {
         display: false,
-        drawBorder: false,
       },
     },
   },
-} as const;
+};
 
 interface RevenueChartProps {
   dateRange: string;
