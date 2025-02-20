@@ -1,11 +1,7 @@
 'use client';
 
 import 'chart.js/auto';
-import { Chart as ChartJS, ChartOptions, GridLineOptions } from 'chart.js';
-import dynamic from 'next/dynamic';
-
-const Line = dynamic(() => import('react-chartjs-2').then(mod => mod.Line), { ssr: false });
-
+import { Chart as ChartJS, ChartOptions } from 'chart.js';
 import {
   CategoryScale,
   LinearScale,
@@ -16,6 +12,8 @@ import {
   Legend,
   Filler
 } from 'chart.js';
+import dynamic from 'next/dynamic';
+import { DateRangeProps } from '@/types/common';
 
 ChartJS.register(
   CategoryScale,
@@ -28,7 +26,7 @@ ChartJS.register(
   Filler
 );
 
-import { DateRangeProps } from '@/types/common';
+const Line = dynamic(() => import('react-chartjs-2').then(mod => mod.Line), { ssr: false });
 
 // Mock data
 const data = {
@@ -73,7 +71,9 @@ const options: ChartOptions<'line'> = {
       beginAtZero: true,
       grid: {
         display: true,
-        borderWidth: 0,
+        border: {
+          width: 0
+        }
       },
       ticks: {
         stepSize: 10
@@ -82,7 +82,9 @@ const options: ChartOptions<'line'> = {
     x: {
       grid: {
         display: false,
-        borderWidth: 0,
+        border: {
+          width: 0
+        }
       }
     }
   },
