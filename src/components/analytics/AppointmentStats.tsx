@@ -73,7 +73,6 @@ const options: ChartOptions<'line'> = {
       beginAtZero: true,
       grid: {
         display: true,
-        drawBorder: false,
         lineWidth: 0,
       },
       ticks: {
@@ -83,7 +82,6 @@ const options: ChartOptions<'line'> = {
     x: {
       grid: {
         display: false,
-        drawBorder: false,
         lineWidth: 0,
       }
     }
