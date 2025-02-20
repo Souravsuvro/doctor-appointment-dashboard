@@ -42,33 +42,33 @@ const options = {
   maintainAspectRatio: false,
   plugins: {
     legend: {
-      display: false
+      display: false,
     },
     title: {
-      display: false
-    }
+      display: false,
+    },
   },
   scales: {
     y: {
       beginAtZero: true,
       grid: {
-        display: true,
+        display: false,
         drawBorder: false,
       },
       ticks: {
-        callback: function(value: number) {
-          return `$${value.toLocaleString()}`;
-        }
-      }
+        callback: function(this: any, tickValue: number) {
+          return '$' + tickValue.toLocaleString();
+        },
+      },
     },
     x: {
       grid: {
         display: false,
         drawBorder: false,
-      }
-    }
-  }
-};
+      },
+    },
+  },
+} as const;
 
 interface RevenueChartProps {
   dateRange: string;
