@@ -3,7 +3,7 @@
 import {
   faXmark,
   faPlus,
-  faMinus,
+  faMinus as _faMinus,
   faTrash
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
