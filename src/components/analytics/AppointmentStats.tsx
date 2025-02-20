@@ -1,7 +1,8 @@
 'use client';
 
 import 'chart.js/auto';
-import { Chart as ChartJS, ChartOptions } from 'chart.js';
+import { Chart as ChartJS, ChartOptions, ScaleOptionsByType } from 'chart.js';
+
 import {
   CategoryScale,
   LinearScale,
@@ -12,6 +13,7 @@ import {
   Legend,
   Filler
 } from 'chart.js';
+
 import dynamic from 'next/dynamic';
 import { DateRangeProps } from '@/types/common';
 
@@ -71,9 +73,8 @@ const options: ChartOptions<'line'> = {
       beginAtZero: true,
       grid: {
         display: true,
-        border: {
-          width: 0
-        }
+        drawBorder: false,
+        lineWidth: 0,
       },
       ticks: {
         stepSize: 10
@@ -82,9 +83,8 @@ const options: ChartOptions<'line'> = {
     x: {
       grid: {
         display: false,
-        border: {
-          width: 0
-        }
+        drawBorder: false,
+        lineWidth: 0,
       }
     }
   },
