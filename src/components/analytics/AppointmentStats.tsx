@@ -1,7 +1,7 @@
 'use client';
 
 import 'chart.js/auto';
-import { Chart as ChartJS, ChartOptions } from 'chart.js';
+import { Chart as ChartJS, ChartOptions, GridLineOptions } from 'chart.js';
 import dynamic from 'next/dynamic';
 
 const Line = dynamic(() => import('react-chartjs-2').then(mod => mod.Line), { ssr: false });
@@ -73,7 +73,7 @@ const options: ChartOptions<'line'> = {
       beginAtZero: true,
       grid: {
         display: true,
-        drawBorder: false,
+        borderWidth: 0,
       },
       ticks: {
         stepSize: 10
@@ -82,7 +82,7 @@ const options: ChartOptions<'line'> = {
     x: {
       grid: {
         display: false,
-        drawBorder: false,
+        borderWidth: 0,
       }
     }
   },
