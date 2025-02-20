@@ -78,27 +78,27 @@ export default function AnalyticsPage() {
 
           {/* Performance Metrics */}
           <div className="lg:col-span-2">
-            <PerformanceMetrics />
+            <PerformanceMetrics dateRange={selectedDateRange} />
           </div>
 
           {/* Appointment Stats */}
           <div>
-            <AppointmentStats />
+            <AppointmentStats dateRange={selectedDateRange} />
           </div>
 
           {/* Revenue Chart */}
           <div>
-            <RevenueChart />
+            <RevenueChart dateRange={selectedDateRange} />
           </div>
 
           {/* Patient Demographics */}
           <div>
-            <PatientDemographics />
+            <PatientDemographics dateRange={selectedDateRange} />
           </div>
 
           {/* Treatment Insights */}
           <div>
-            <TreatmentInsights />
+            <TreatmentInsights dateRange={selectedDateRange} />
           </div>
         </div>
       </div>
