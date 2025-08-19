@@ -63,6 +63,6 @@ npm install
 Distributed under the MIT License.
 
 ## Contact
-Your Name - your.email@example.com
+Sourav Sarker Suvra - www.souravsuvra.com
 
-Project Link: [https://github.com/your-username/doctor-appointment-dashboard](https://github.com/your-username/doctor-appointment-dashboard)
+Project Link: [https://github.com/Souravsuvro/doctor-appointment-dashboard](https://github.com/Souravsuvro/doctor-appointment-dashboard)
